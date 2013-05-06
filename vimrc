@@ -76,7 +76,7 @@ endfunction
 
 inoremap <Tab> <C-R>=SuperCleverTab()<cr>
 
-autocmd VimEnter * NERDTree
+"autocmd VimEnter * NERDTree
 
 "CScope stuff
 set cscopetag
