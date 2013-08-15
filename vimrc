@@ -48,7 +48,8 @@ if version >= 700
    highlight   PmenuThumb    ctermfg=0 ctermbg=7
 endif
 
-colorscheme desert
+"colorscheme desert
+colorscheme twilight
 highlight Pmenu ctermbg=238 gui=bold
 let g:NERDTreeDirArrows=0
 map <F2> :NERDTreeToggle<CR>
@@ -57,7 +58,7 @@ map <Esc>[D :tabprevious<CR>
 map <Esc>[C :tabnext<CR>
 map <F9> :!scons server<CR>
 map <F10> :!scons webclient<CR>
-map <F12> :!/home/johna/bin/ctags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=C++ --if0=yes .<CR>
+"map <F12> :!/home/johna/bin/ctags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=C++ --if0=yes .<CR>
 imap ii <Esc>
 
 function! SuperCleverTab()
@@ -73,6 +74,14 @@ function! SuperCleverTab()
       endif
    endif
 endfunction
+
+function! ParseNewCode()
+   :!/home/johna/bin/ctags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=C++ --if0=yes .
+   :!find . -iname "*.cpp" -o -iname "*.c" -o -iname "*.h" > ./cscope.files
+   :!cscope -b -q -k
+endfunction
+
+map <F12> :exec ParseNewCode()
 
 inoremap <Tab> <C-R>=SuperCleverTab()<cr>
 
@@ -120,52 +129,31 @@ function! ConvertLineEndings()
    :w
 endfunction
 
-map <F4> :call ConvertLineEndings() 
-"Include Directories
-:let g:syntastic_c_include_dirs = [ './controller/software/server',
-         \ './controller/software/functors',
-         \ './controller/software/validation',
-         \ './schema',
-         \ './shared/csfproduct/',
-         \ './shared/controlbus/',
-         \ './controller/software/platform',
-         \ './controller/software/shared',
-         \ './controller/software/server',
-         \ './controller/software/server/validation',
-         \ './shared',
-         \ './shared/utils',
-         \ './controller/software/csp_sdk/include',
-         \ './controller/software/subsysprogramming/libssupdate/include',
-         \ './controller/software/platform/linux/include',
-         \ './controller/software/frontpanel',
-         \ './controller/software/frontpanel/SystemObjects',
-         \ './controller/software/frontpanel/SystemObjects/Card',
-         \ './controller/software/frontpanel/SystemObjects/Db',
-         \ './controller/software/frontpanel/SystemObjects/Display',
-         \ './controller/software/frontpanel/SystemObjects/Input',
-         \ './controller/software/frontpanel/SystemObjects/Keypad',
-         \ './controller/software/frontpanel/SystemObjects/Server',
-         \ './controller/software/frontpanel/SystemObjects/SNMP',
-         \ './controller/software/frontpanel/Events',
-         \ './controller/software/frontpanel/ScreenManager',
-         \ './controller/software/frontpanel/ScreenManager/Lines',
-         \ './controller/software/frontpanel/ScreenManager/MenuStyle',
-         \ './controller/software/frontpanel/ScreenManager/Screens',
-         \ './controller/software/frontpanel/ScreenManager/Screens/ScreenMinions',
-         \ './controller/software/frontpanel/Utilities',
-         \ './modulator/software/application',
-         \ './modulator/software/application/device',
-         \ './modulator/software/application/device/adapters',
-         \ './modulator/software/depends/install/include',
-         \ './modulator/software/shared/',
-         \ './modulator/software/shared/ts_extract/include/ts/data',
-         \ './modulator/software/shared/ts_extract/include/ts/data/psi',
-         \ './modulator/software/shared/ts_extract/include/ts/data/psip',
-         \ './modulator/software/shared/ts_extract/include/ts/data/scte35',
-         \ './modulator/software/shared/ts_extract/include/ts/data/scte57',
-         \ './modulator/software/shared/ts_extract/include/ts/data/si',
-         \ './modulator/software/shared/ts_extract/include/ts/extract',
-         \ './modulator/software/shared/ts_extract/include/ts/extract/filter',
-         \ './modulator/software/shared/xptools/include/xptools/'
-         \ ]
+map <F4> :call ConvertLineEndings()<CR> 
+map <F6> :call JCommentWriter()<CR>
 
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
+" let g:syntastic_quiet_warnings=1
+
+function! NeatFoldText() "{{{2
+   let line = ' ' . substitute(getline(v:foldstart), '^\s*"\?\s*\|\s*"\?\s*{{' . '{\d*\s*', '', 'g') . ' '
+   let lines_count = v:foldend - v:foldstart + 1
+   let lines_count_text = '| ' . printf("%10s", lines_count . ' lines') . ' |'
+   let foldchar = split(filter(split(&fillchars, ','), 'v:val =~# "fold"')[0], ':')[-1]
+   let foldtextstart = strpart('+' . repeat(foldchar, v:foldlevel*2) . line, 0, (winwidth(0)*2)/3)
+   let foldtextend = lines_count_text . repeat(foldchar, 8)
+   let length = strlen(substitute(foldtextstart . foldtextend, '.', 'x', 'g'))
+   return foldtextstart . repeat(foldchar, winwidth(0)-length) . foldtextend
+endfunction
+set foldtext=NeatFoldText()
+" }}}2
+
+set foldmethod=syntax
+
+:function! FixCommas()
+   :! perl $s=join(qq{\n},$curbuf->Get(0 .. $curbuf->Count()));$s =~ s#^((?:[^/\n]|/(?!/))*),((?:\s*|//.*$|/\*(?:[^*]|\*(?!/))*\*/)*\s*[}\]])#$1$2#mg; $curbuf->Set(0,0,split(qq{\n},$s));
+endfunction
+
+map <F11> :call FixCommas()<CR> 
