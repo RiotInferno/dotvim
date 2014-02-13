@@ -15,7 +15,6 @@ set expandtab
 "match OverLength /\%>80v.\+/
 match ErrorMsg '\%>80v.\+'
 
-"set tags=/home/johna/tde3100/software/tags
 "set tags=./tags
 if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gnome-terminal"
      set t_Co=256
@@ -58,7 +57,6 @@ map <Esc>[D :tabprevious<CR>
 map <Esc>[C :tabnext<CR>
 map <F9> :!scons server<CR>
 map <F10> :!scons webclient<CR>
-"map <F12> :!/home/johna/bin/ctags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=C++ --if0=yes .<CR>
 imap ii <Esc>
 
 function! SuperCleverTab()
@@ -76,7 +74,7 @@ function! SuperCleverTab()
 endfunction
 
 function! ParseNewCode()
-   :!/home/johna/bin/ctags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=C++ --if0=yes .
+   :!~/bin/ctags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=C++ --if0=yes .
    :!find . -iname "*.cpp" -o -iname "*.c" -o -iname "*.h" > ./cscope.files
    :!cscope -b -q -k
 endfunction
