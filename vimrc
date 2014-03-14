@@ -155,3 +155,7 @@ set foldmethod=syntax
 endfunction
 
 map <F11> :call FixCommas()<CR> 
+
+autocmd FileType cpp let b:dispatch = 'scons -u'
+nnoremap <F7> :Dispatch<CR>
+
