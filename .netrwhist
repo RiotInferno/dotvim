@@ -1,9 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =7
-let g:netrw_dirhist_1='/home/johna/.vim'
-let g:netrw_dirhist_2='/home/johna/5800/main/software/controller/csp_build/depends/build/linux-2.6.30/drivers/serial'
-let g:netrw_dirhist_3='/home/johna/5800/main/software/controller/csp_build/depends/build/linux-2.6.30/arch/arm/mach-at91'
-let g:netrw_dirhist_4='/home/johna/SMD/trunk'
-let g:netrw_dirhist_5='/home/johna/5800/main/software/controller/csp_build/depends/linux-2.6.30-headers/include/config/defconfig'
-let g:netrw_dirhist_6='/home/johna/5800/main/software/controller/csp_build/depends/build/linux-2.6.30/linux'
-let g:netrw_dirhist_7='/home/johna/.vim'
