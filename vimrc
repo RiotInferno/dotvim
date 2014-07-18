@@ -163,6 +163,7 @@ let g:syntastic_cpp_include_dirs = [ '/home/johna/CSF/trunk/sw/src/libcsf/includ
                                    \ '/home/johna/CSF/trunk/sw/csp_sdk/include' ]
 
 " VCS Settings
+" Shift - F1
 nmap [23~ :VCSVimDiff<CR>
 nmap [24~ :VCSUpdate<CR>
 nmap [25~ :VCSAdd<CR>
