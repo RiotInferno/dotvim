@@ -1,5 +1,7 @@
+let g:pathogen_disabled = [ 'YouCompleteMe' ]
+
 call pathogen#infect()
-nmap <F8> :TagbarToggle<CR>
+
 syntax on
 filetype indent on
 set autoindent
@@ -27,17 +29,6 @@ else
    filetype on
 endif
 
-if v:version >= 700
-   set omnifunc=syntaxcomplete#Complete " override built-in C omnicomplete with C++ OmniCppComplete plugin
-   let OmniCpp_GlobalScopeSearch   = 1
-   let OmniCpp_DisplayMode         = 1
-   let OmniCpp_ShowScopeInAbbr     = 0 "do not show namespace in pop-up
-   let OmniCpp_ShowPrototypeInAbbr = 1 "show prototype in pop-up
-   let OmniCpp_ShowAccess          = 1 "show access in pop-up
-   let OmniCpp_SelectFirstItem     = 1 "select first item in pop-up
-   set completeopt=menuone,menu,longest
-endif
-
 if version >= 700
    let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
    highlight   clear
@@ -51,12 +42,8 @@ endif
 colorscheme twilight
 highlight Pmenu ctermbg=238 gui=bold
 let g:NERDTreeDirArrows=0
-map <F2> :NERDTreeToggle<CR>
-map <F3> :TlistToggle<CR>
 map <Esc>[D :tabprevious<CR>
 map <Esc>[C :tabnext<CR>
-map <F9> :!scons server<CR>
-map <F10> :!scons webclient<CR>
 imap ii <Esc>
 
 function! SuperCleverTab()
@@ -78,8 +65,6 @@ function! ParseNewCode()
    :!find . -iname "*.cpp" -o -iname "*.c" -o -iname "*.h" > ./cscope.files
    :!cscope -b -q -k
 endfunction
-
-map <F12> :exec ParseNewCode()
 
 inoremap <Tab> <C-R>=SuperCleverTab()<cr>
 
@@ -111,7 +96,6 @@ set runtimepath^=~/.vim/bundle/ctrlp.vim
 :set hlsearch
 :nmap \q :nohlsearch<CR>
 
-:nmap ; :CtrlPBuffer<CR>
 :let g:ctrlp_map = '<Leader>t'
 :let g:ctrlp_match_window_bottom = 0
 :let g:ctrlp_match_window_reversed = 0
@@ -127,13 +111,9 @@ function! ConvertLineEndings()
    :w
 endfunction
 
-map <F4> :call ConvertLineEndings()<CR> 
-map <F6> :call JCommentWriter()<CR>
-
-" set statusline+=%#warningmsg#
-" set statusline+=%{SyntasticStatuslineFlag()}
-" set statusline+=%*
-" let g:syntastic_quiet_warnings=1
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 
 function! NeatFoldText() "{{{2
    let line = ' ' . substitute(getline(v:foldstart), '^\s*"\?\s*\|\s*"\?\s*{{' . '{\d*\s*', '', 'g') . ' '
@@ -150,12 +130,31 @@ set foldtext=NeatFoldText()
 
 set foldmethod=syntax
 
-:function! FixCommas()
-   :! perl $s=join(qq{\n},$curbuf->Get(0 .. $curbuf->Count()));$s =~ s#^((?:[^/\n]|/(?!/))*),((?:\s*|//.*$|/\*(?:[^*]|\*(?!/))*\*/)*\s*[}\]])#$1$2#mg; $curbuf->Set(0,0,split(qq{\n},$s));
-endfunction
-
-map <F11> :call FixCommas()<CR> 
-
 autocmd FileType cpp let b:dispatch = 'scons -u'
+
+nmap <F1> :CtrlPBuffer<CR>
+nmap <F2> :NERDTreeToggle<CR>
+nmap <F3> :TagbarToggle<CR>
+nmap <F4> :call ConvertLineEndings()<CR> 
+nmap <F5> :%s/\s\+$//<CR>
+nmap <F6> :call JCommentWriter()<CR>
 nnoremap <F7> :Dispatch<CR>
+nmap <F8> :TagbarToggle<CR>
+nmap <F9> :CtrlP<CR>
+nmap <F12> :exec ParseNewCode()<CR>
+
+" Syntastic Setings
+" let g:syntastic_cpp_check_header = 0
+let g:syntastic_cpp_remove_include_errors = 1
+let g:syntastic_enable_signs = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_cpp_compiler_options = ' -g -O0 -Werror -Wall -D_DEBUG -rdynamic' 
+
+let g:syntastic_cpp_include_dirs = [ '/home/johna/CSF/trunk/sw/src/libcsf/include',
+                                   \ '/home/johna/TechKits/xptools/core/include',
+                                   \ '/home/johna/TechKits/xptools/core/build/include',
+                                   \ '/home/johna/CSF/trunk/sw/utils/controlbus',
+                                   \ '/home/johna/CSF/trunk/sw/utils/csfproduct',
+                                   \ '/home/johna/CSF/trunk/sw/csp_sdk/include' ]
 
