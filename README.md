@@ -5,8 +5,14 @@ Create symlinks:
    ln -s ~/dotfiles/vimrc ~/.vimrc
 
 Update plugins:
-   git submodule update --init
+   git submodule update --init --recursive
 
 Future submodule updates:
-   git submodule foreach git pull origin master
+   git submodule foreach git pull origin master --recurse-submodules
+
+Convert Line Endings in bundle/jcommentor
+
+Local install of YCM:
+   pip install flake8
+   change line 129 to: cmake_args="-DCMAKE_INSTALL_PREFIX:PATH=$HOME"
  

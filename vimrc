@@ -1,5 +1,3 @@
-let g:pathogen_disabled = [ 'YouCompleteMe' ]
-
 call pathogen#infect()
 
 syntax on
@@ -12,6 +10,12 @@ set lbr
 set tabstop=3
 set shiftwidth=3
 set expandtab
+
+set backspace=indent,eol,start
+
+if match( $TERM, "screen" )!=-1
+   set term=xterm
+endif
 
 "highlight OverLength ctermbg=darkred ctermfg=white guibg=#FFD9D9
 "match OverLength /\%>80v.\+/
@@ -135,7 +139,7 @@ autocmd FileType cpp let b:dispatch = 'scons -u'
 nmap <F1> :CtrlPBuffer<CR>
 nmap <F2> :NERDTreeToggle<CR>
 nmap <F3> :TagbarToggle<CR>
-nmap <F4> :call ConvertLineEndings()<CR> 
+nmap <F4> :call ConvertLineEndings()<CR>
 nmap <F5> :%s/\s\+$//<CR>
 nmap <F6> :call JCommentWriter()<CR>
 nnoremap <F7> :Dispatch<CR>
@@ -149,7 +153,7 @@ let g:syntastic_cpp_remove_include_errors = 1
 let g:syntastic_enable_signs = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
-let g:syntastic_cpp_compiler_options = ' -g -O0 -Werror -Wall -D_DEBUG -rdynamic' 
+let g:syntastic_cpp_compiler_options = ' -g -O0 -Werror -Wall -D_DEBUG -rdynamic'
 
 let g:syntastic_cpp_include_dirs = [ '/home/johna/CSF/trunk/sw/src/libcsf/include',
                                    \ '/home/johna/TechKits/xptools/core/include',
@@ -158,3 +162,9 @@ let g:syntastic_cpp_include_dirs = [ '/home/johna/CSF/trunk/sw/src/libcsf/includ
                                    \ '/home/johna/CSF/trunk/sw/utils/csfproduct',
                                    \ '/home/johna/CSF/trunk/sw/csp_sdk/include' ]
 
+" VCS Settings
+nmap [23~ :VCSVimDiff<CR>
+nmap [24~ :VCSUpdate<CR>
+nmap [25~ :VCSAdd<CR>
+nmap [26~ :VCSDelete<CR>
+nmap [28~ :VCSCommit<CR>
