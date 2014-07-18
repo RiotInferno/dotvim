@@ -31,3 +31,9 @@
 [submodule "bundle/conflict2Diff"]
 	path = bundle/conflict2Diff
 	url = git://github.com/vim-scripts/Conflict2Diff.git
+[submodule "bundle/genutils"]
+	path = bundle/genutils
+	url = git://github.com/vim-scripts/genutils.git
+[submodule "bundle/jcommenter"]
+	path = bundle/jcommenter
+	url = git://github.com/vim-scripts/jcommenter.vim.git
