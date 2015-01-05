@@ -70,9 +70,17 @@ function! ParseNewCode()
    :!cscope -b -q -k
 endfunction
 
+function! StyleFormatter()
+   :%s/\s\+$//e
+   :%s/\[ \(.*\) \]/\[\1\]/ge
+   :%!astyle
+endfunction
+
 inoremap <Tab> <C-R>=SuperCleverTab()<cr>
 
 "autocmd VimEnter * NERDTree
+
+"autocmd BufEnter * nested :call tagbar#autoopen(1)
 
 "CScope stuff
 set cscopetag
@@ -140,10 +148,12 @@ nmap <F1> :CtrlPBuffer<CR>
 nmap <F2> :NERDTreeToggle<CR>
 nmap <F3> :TagbarToggle<CR>
 nmap <F4> :call ConvertLineEndings()<CR>
-nmap <F5> :%s/\s\+$//<CR>
+" nmap <F5> :%s/\s\+$//<CR> :%s/\[ \(.*\) \]/\[\1\]/g<CR> :%!astyle<CR>
+nmap <F5> :exec StyleFormatter()<CR> 
 nmap <F6> :call JCommentWriter()<CR>
 nnoremap <F7> :Dispatch<CR>
-nmap <F8> :TagbarToggle<CR>
+" Find comments and make sure there's a space
+nmap <F8> :%s!\v//(\w)!// \1!g<CR> 
 nmap <F9> :CtrlP<CR>
 nmap <F12> :exec ParseNewCode()<CR>
 
@@ -162,14 +172,3 @@ let g:syntastic_cpp_include_dirs = [ '/home/johna/CSF/trunk/sw/src/libcsf/includ
                                    \ '/home/johna/CSF/trunk/sw/utils/csfproduct',
                                    \ '/home/johna/CSF/trunk/sw/csp_sdk/include' ]
 
-" VCS Settings
-" Shift - F1
-nmap [23~ :VCSVimDiff<CR>
-" Shift - F2
-nmap [24~ :VCSUpdate<CR>
-" Shift - F3
-nmap [25~ :VCSAdd<CR>
-" Shift - F4
-nmap [26~ :VCSDelete<CR>
-" Shift - F5
-nmap [28~ :VCSCommit<CR>
