@@ -15,6 +15,7 @@ Bundle 'scrooloose/syntastic'
 Bundle 'majutsushi/tagbar'
 Bundle 'tpope/vim-dispatch'
 Bundle 'Lokaltog/vim-powerline'
+Bundle 'SirVer/ultisnips'
 
 func! vundle#end(...) abort
    if (exists("g:vundle_lazy_load"))
@@ -26,7 +27,10 @@ endf
 call vundle#end()
 
 syntax on
-filetype indent on
+set clipboard=unnamed
+set number
+
+filetype plugin indent on
 set autoindent
 set nu
 set ic
@@ -197,3 +201,6 @@ let g:syntastic_cpp_include_dirs = [ '/home/johna/CSF/trunk/sw/src/libcsf/includ
                                    \ '/home/johna/CSF/trunk/sw/utils/csfproduct',
                                    \ '/home/johna/CSF/trunk/sw/csp_sdk/include' ]
 
+let g:ycm_global_ycm_extra_conf = "~/.vim/ycm_extra_conf.py"
+let g:ycm_key_list_select_completion=[]
+let g:ycm_key_list_previous_completion=[]
