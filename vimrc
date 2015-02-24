@@ -8,7 +8,7 @@ Bundle 'Valloric/YouCompleteMe'
 Bundle 'kien/ctrlp.vim'
 Bundle 'tpope/vim-fugitive'
 Bundle 'vim-scripts/genutils'
-Bundle 'vim-scripts/jcommenter.vim'
+Bundle 'vim-scripts/Conque-GDB'
 Bundle 'scrooloose/nerdtree'
 Bundle 'ervandew/supertab'
 Bundle 'scrooloose/syntastic'
@@ -16,6 +16,14 @@ Bundle 'majutsushi/tagbar'
 Bundle 'tpope/vim-dispatch'
 Bundle 'Lokaltog/vim-powerline'
 
+func! vundle#end(...) abort
+   if (exists("g:vundle_lazy_load"))
+      unlet g:vundle_lazy_load
+   endif
+   call vundle#config#activate_bundles()
+endf
+
+call vundle#end()
 
 syntax on
 filetype indent on
