@@ -40,3 +40,9 @@
 [submodule "bundle/fugitive"]
 	path = bundle/fugitive
 	url = https://github.com/tpope/vim-fugitive
+[submodule "otherPlugins/Conque-GDB"]
+	path = otherPlugins/Conque-GDB
+	url = https://github.com/vim-scripts/Conque-GDB
+[submodule "bundle/vundle"]
+	path = bundle/vundle
+	url = https://github.com/gmarik/vundle.git

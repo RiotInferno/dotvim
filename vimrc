@@ -1,4 +1,21 @@
-call pathogen#infect()
+set nocompatible
+filetype off
+set rtp+=~/.vim/bundle/vundle
+call vundle#rc()
+
+Bundle 'gmarik/vundle'
+Bundle 'Valloric/YouCompleteMe'
+Bundle 'kien/ctrlp.vim'
+Bundle 'tpope/vim-fugitive'
+Bundle 'vim-scripts/genutils'
+Bundle 'vim-scripts/jcommenter.vim'
+Bundle 'scrooloose/nerdtree'
+Bundle 'ervandew/supertab'
+Bundle 'scrooloose/syntastic'
+Bundle 'majutsushi/tagbar'
+Bundle 'tpope/vim-dispatch'
+Bundle 'Lokaltog/vim-powerline'
+
 
 syntax on
 filetype indent on
