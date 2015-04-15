@@ -3,19 +3,20 @@ filetype off
 set rtp+=~/.vim/bundle/vundle
 call vundle#rc()
 
-Bundle 'gmarik/vundle'
-Bundle 'Valloric/YouCompleteMe'
-Bundle 'kien/ctrlp.vim'
-Bundle 'tpope/vim-fugitive'
-Bundle 'vim-scripts/genutils'
-Bundle 'vim-scripts/Conque-GDB'
-Bundle 'scrooloose/nerdtree'
-Bundle 'ervandew/supertab'
-Bundle 'scrooloose/syntastic'
-Bundle 'majutsushi/tagbar'
-Bundle 'tpope/vim-dispatch'
-Bundle 'Lokaltog/vim-powerline'
-Bundle 'SirVer/ultisnips'
+Plugin 'gmarik/vundle'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'kien/ctrlp.vim'
+"Plugin 'vim-scripts/genutils'
+Plugin 'scrooloose/nerdtree'
+Plugin 'ervandew/supertab'
+"Plugin 'scrooloose/syntastic'
+Plugin 'majutsushi/tagbar'
+"Plugin 'tpope/vim-dispatch'
+Plugin 'tpope/vim-fugitive'
+Plugin 'Lokaltog/vim-powerline'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
+
 
 func! vundle#end(...) abort
    if (exists("g:vundle_lazy_load"))
@@ -152,9 +153,9 @@ function! ConvertLineEndings()
    :w
 endfunction
 
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
 
 function! NeatFoldText() "{{{2
    let line = ' ' . substitute(getline(v:foldstart), '^\s*"\?\s*\|\s*"\?\s*{{' . '{\d*\s*', '', 'g') . ' '
@@ -187,20 +188,118 @@ nmap <F9> :CtrlP<CR>
 nmap <F12> :exec ParseNewCode()<CR>
 
 " Syntastic Setings
-" let g:syntastic_cpp_check_header = 0
-let g:syntastic_cpp_remove_include_errors = 1
-let g:syntastic_enable_signs = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_cpp_compiler_options = ' -g -O0 -Werror -Wall -D_DEBUG -rdynamic'
+"let g:syntastic_cpp_check_header = 1
+"let g:syntastic_cpp_remove_include_errors = 1
+"let g:syntastic_enable_signs = 1
+"let g:syntastic_always_populate_loc_list = 1
+"let g:syntastic_auto_loc_list = 1
+"let g:syntastic_check_on_open = 1
+"let g:syntastic_check_on_wq = 0
+"let g:syntastic_cpp_compiler_options = ' -g -O0 -Werror -Wall -D_DEBUG -rdynamic'
 
-let g:syntastic_cpp_include_dirs = [ '/home/johna/CSF/trunk/sw/src/libcsf/include',
-                                   \ '/home/johna/TechKits/xptools/core/include',
-                                   \ '/home/johna/TechKits/xptools/core/build/include',
-                                   \ '/home/johna/CSF/trunk/sw/utils/controlbus',
-                                   \ '/home/johna/CSF/trunk/sw/utils/csfproduct',
-                                   \ '/home/johna/CSF/trunk/sw/csp_sdk/include' ]
+"let g:syntastic_cpp_include_dirs = [ '/home/johna/CSF/trunk/sw/src/libcsf/include',
+"                                   \ '/home/johna/TechKits/xptools/core/include',
+"                                   \ '/home/johna/TechKits/xptools/core/build/include',
+"                                   \ '/home/johna/CSF/trunk/sw/utils/controlbus',
+"                                   \ '/home/johna/CSF/trunk/sw/utils/csfproduct',
+"                                   \ '/home/johna/CSF/trunk/sw/csp_sdk/include' ]
 
 let g:ycm_global_ycm_extra_conf = "~/.vim/ycm_extra_conf.py"
 let g:ycm_key_list_select_completion=[]
 let g:ycm_key_list_previous_completion=[]
+
+let g:UltiSnipsExpandTrigger="<c-tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+
+
+" Notes:
+"   (1) To enhance the ergonomics of this sufficiently to make it practical, at
+"       least, until your brain grows a new lobe dedicated to counting line offsets
+"       in the background while you work, you should either make sure you have
+"       something like the following in your `~/.vimrc`:
+"
+           set number
+           if has('autocmd')
+           augroup vimrc_linenumbering
+               autocmd!
+               autocmd WinLeave *
+                           \ if &number |
+                           \   set norelativenumber |
+                           \ endif
+               autocmd BufWinEnter *
+                           \ if &number |
+                           \   set relativenumber |
+                           \ endif
+               autocmd VimEnter *
+                           \ if &number |
+                           \   set relativenumber |
+                           \ endif
+           augroup END
+           endif
+"
+"       or you have installed a plugin like
+"       (vim-numbers)[https://github.com/myusuf3/numbers.vim].
+"
+"   (2) You might want to relax the constraint for horizontal motions, or
+"       add other motions. You can customize the list of motions by
+"       specifying the keys in the
+"       `g:keys_to_disable_if_not_preceded_by_count` variable. For example,
+"       the following only enforces count-prefixed motions for "j" and "k":
+"
+"         let g:keys_to_disable_if_not_preceded_by_count = ["j", "k"]
+
+function! DisableIfNonCounted(move) range
+    if v:count
+        return a:move
+    else
+        " You can make this do something annoying like:
+           " echoerr "Count required!"
+           " sleep 2
+        return ""
+    endif
+endfunction
+
+function! SetDisablingOfBasicMotionsIfNonCounted(on)
+    let keys_to_disable = get(g:, "keys_to_disable_if_not_preceded_by_count", ["j", "k", "l", "h", "<UP>", "<DOWN>", "<LEFT>", "<RIGHT>"])
+    if a:on
+        for key in keys_to_disable
+            execute "noremap <expr> <silent> " . key . " DisableIfNonCounted('" . key . "')"
+        endfor
+        let g:keys_to_disable_if_not_preceded_by_count = keys_to_disable
+        let g:is_non_counted_basic_motions_disabled = 1
+    else
+        for key in keys_to_disable
+            try
+                execute "unmap " . key
+            catch /E31:/
+            endtry
+        endfor
+        let g:is_non_counted_basic_motions_disabled = 0
+    endif
+endfunction
+
+function! ToggleDisablingOfBasicMotionsIfNonCounted()
+    let is_disabled = get(g:, "is_non_counted_basic_motions_disabled", 0)
+    if is_disabled
+        call SetDisablingOfBasicMotionsIfNonCounted(0)
+    else
+        call SetDisablingOfBasicMotionsIfNonCounted(1)
+    endif
+endfunction
+
+command! ToggleDisablingOfNonCountedBasicMotions :call ToggleDisablingOfBasicMotionsIfNonCounted()
+command! DisableNonCountedBasicMotions :call SetDisablingOfBasicMotionsIfNonCounted(1)
+command! EnableNonCountedBasicMotions :call SetDisablingOfBasicMotionsIfNonCounted(0)
+
+DisableNonCountedBasicMotions
+
+inoremap  <Up>     <NOP>
+inoremap  <Down>   <NOP>
+inoremap  <Left>   <NOP>
+inoremap  <Right>  <NOP>
+noremap   <Up>     <NOP>
+noremap   <Down>   <NOP>
+noremap   <Left>   <NOP>
+noremap   <Right>  <NOP>

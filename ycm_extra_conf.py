@@ -1,6 +1,16 @@
 # Partially stolen from https://bitbucket.org/mblum/libgp/src/2537ea7329ef/.ycm_extra_conf.py
 import os
 import ycm_core
+import fnmatch
+
+includes = ['*.h']
+matches = set([])
+
+for root, dirnames, filenames in os.walk( os.getcwd() ):
+   for filename in filenames:
+      if filename.endswith(( '.h' )):
+         matches.add( root )
+         pass
 
 # These are the compilation flags that will be used in case there's no
 # compilation database set (by default, one is not set).
@@ -9,7 +19,6 @@ flags = [
     '-Wall',
     '-Wextra',
     '-Werror',
-    '-Wc++98-compat',
     '-Wno-long-long',
     '-Wno-variadic-macros',
     '-fexceptions',
@@ -27,12 +36,14 @@ flags = [
     '-x', 'c++',
     # This path will only work on OS X, but extra paths that don't exist are not
     # harmful
-    '-isystem', '/System/Library/Frameworks/Python.framework/Headers',
     '-isystem', '/usr/local/include',
-    '-isystem', '/usr/local/include/eigen3',
-    '-I', 'include'
+    '-I', 'include',
     '-I.'
 ]
+
+for dir in matches:
+   flags.append( '-isystem' )
+   flags.append( dir )
 
 # Set this to the absolute path to the folder (NOT the file!) containing the
 # compile_commands.json file to use that instead of 'flags'. See here for
