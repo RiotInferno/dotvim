@@ -52,9 +52,11 @@ endif
 match ErrorMsg '\%>80v.\+'
 
 "set tags=./tags
-if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gnome-terminal"
-     set t_Co=256
-  endif
+"if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gnome-terminal"
+"     set t_Co=256
+"endif
+set t_Co=256
+
 
 if v:version >= 600
    filetype plugin on
@@ -101,9 +103,10 @@ function! ParseNewCode()
 endfunction
 
 function! StyleFormatter()
+   :%!astyle
+   :%s#\($\n\s*\)\+\%$##
    :%s/\s\+$//e
    :%s/\[ \(.*\) \]/\[\1\]/ge
-   :%!astyle
 endfunction
 
 inoremap <Tab> <C-R>=SuperCleverTab()<cr>
