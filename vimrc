@@ -7,7 +7,6 @@ Plugin 'gmarik/vundle'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'kien/ctrlp.vim'
 Plugin 'scrooloose/nerdtree'
-Plugin 'ervandew/supertab'
 Plugin 'majutsushi/tagbar'
 Plugin 'tpope/vim-fugitive'
 Plugin 'powerline/powerline'
@@ -47,16 +46,9 @@ if match( $TERM, "screen" )!=-1
    set term=xterm
 endif
 
-"highlight OverLength ctermbg=darkred ctermfg=white guibg=#FFD9D9
-"match OverLength /\%>80v.\+/
 match ErrorMsg '\%>80v.\+'
 
-"set tags=./tags
-"if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gnome-terminal"
-"     set t_Co=256
-"endif
 set t_Co=256
-
 
 if v:version >= 600
    filetype plugin on
@@ -65,36 +57,12 @@ else
    filetype on
 endif
 
-if version >= 700
-   let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
-   highlight   clear
-   highlight   Pmenu         ctermfg=0 ctermbg=2
-   highlight   PmenuSel      ctermfg=0 ctermbg=7
-   highlight   PmenuSbar     ctermfg=7 ctermbg=0
-   highlight   PmenuThumb    ctermfg=0 ctermbg=7
-endif
-
-"colorscheme desert
 colorscheme twilight
 highlight Pmenu ctermbg=238 gui=bold
 let g:NERDTreeDirArrows=0
 map <Esc>[D :tabprevious<CR>
 map <Esc>[C :tabnext<CR>
 imap ii <Esc>
-
-function! SuperCleverTab()
-   if strpart(getline('.'), 0, col('.') - 1) =~ '^\s*$'
-      return "\<Tab>"
-   else
-      if &omnifunc != ''
-         return "\<C-X>\<C-O>"
-      elseif &dictionary != ''
-         return "\<C-K>"
-      else
-         return "\<C-N>"
-      endif
-   endif
-endfunction
 
 function! ParseNewCode()
    :!~/bin/ctags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=C++ --if0=yes .
@@ -110,12 +78,6 @@ function! StyleFormatter()
    :%s/\(\w\))/\1 )/ge
    :%s/\[ \(.*\) \]/\[\1\]/ge
 endfunction
-
-inoremap <Tab> <C-R>=SuperCleverTab()<cr>
-
-"autocmd VimEnter * NERDTree
-
-"autocmd BufEnter * nested :call tagbar#autoopen(1)
 
 "CScope stuff
 set cscopetag
@@ -192,32 +154,9 @@ nmap <F8> :%s!\v//(\w)!// \1!g<CR>
 nmap <F9> :CtrlP<CR>
 nmap <F12> :exec ParseNewCode()<CR>
 
-" Syntastic Setings
-"let g:syntastic_cpp_check_header = 1
-"let g:syntastic_cpp_remove_include_errors = 1
-"let g:syntastic_enable_signs = 1
-"let g:syntastic_always_populate_loc_list = 1
-"let g:syntastic_auto_loc_list = 1
-"let g:syntastic_check_on_open = 1
-"let g:syntastic_check_on_wq = 0
-"let g:syntastic_cpp_compiler_options = ' -g -O0 -Werror -Wall -D_DEBUG -rdynamic'
-
-"let g:syntastic_cpp_include_dirs = [ '/home/johna/CSF/trunk/sw/src/libcsf/include',
-"                                   \ '/home/johna/TechKits/xptools/core/include',
-"                                   \ '/home/johna/TechKits/xptools/core/build/include',
-"                                   \ '/home/johna/CSF/trunk/sw/utils/controlbus',
-"                                   \ '/home/johna/CSF/trunk/sw/utils/csfproduct',
-"                                   \ '/home/johna/CSF/trunk/sw/csp_sdk/include' ]
-
 let g:ycm_global_ycm_extra_conf = "~/.vim/ycm_extra_conf.py"
 let g:ycm_key_list_select_completion=[]
 let g:ycm_key_list_previous_completion=[]
-
-let g:UltiSnipsExpandTrigger="<c-tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-
-
 
 " Notes:
 "   (1) To enhance the ergonomics of this sufficiently to make it practical, at
