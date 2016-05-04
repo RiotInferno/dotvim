@@ -6,14 +6,11 @@ call vundle#rc()
 Plugin 'gmarik/vundle'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'kien/ctrlp.vim'
-"Plugin 'vim-scripts/genutils'
 Plugin 'scrooloose/nerdtree'
 Plugin 'ervandew/supertab'
-"Plugin 'scrooloose/syntastic'
 Plugin 'majutsushi/tagbar'
-"Plugin 'tpope/vim-dispatch'
 Plugin 'tpope/vim-fugitive'
-Plugin 'Lokaltog/vim-powerline'
+Plugin 'powerline/powerline'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 
@@ -26,6 +23,9 @@ func! vundle#end(...) abort
 endf
 
 call vundle#end()
+
+set listchars=trail:·,precedes:«,extends:»,eol:↲,tab:▸\ 
+set list
 
 syntax on
 set clipboard=unnamed
@@ -106,6 +106,8 @@ function! StyleFormatter()
    :%!astyle
    :%s#\($\n\s*\)\+\%$##
    :%s/\s\+$//e
+   :%s/(\(\w\)/( \1/ge
+   :%s/\(\w\))/\1 )/ge
    :%s/\[ \(.*\) \]/\[\1\]/ge
 endfunction
 
